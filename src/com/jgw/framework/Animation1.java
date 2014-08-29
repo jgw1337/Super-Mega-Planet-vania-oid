@@ -3,14 +3,14 @@ package com.jgw.framework;
 import java.awt.Image;
 import java.util.ArrayList;
 
-public class Animation {
+public class Animation1 {
 	private ArrayList frames;
 	private int currentFrame;
 	private long animTime;
 	private long totalDuration;
 
-	public Animation() {
-		frames = new ArrayList();
+	public Animation1() {
+		frames = new ArrayList<AnimFrame>();
 		totalDuration = 0;
 
 		synchronized (this) {

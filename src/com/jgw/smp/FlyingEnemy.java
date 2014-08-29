@@ -51,10 +51,9 @@ public class FlyingEnemy {
 	}
 
 	private void checkCollision() {
-		if (r.intersects(Hero.bodyUpper) || r.intersects(Hero.bodyLower)
-				|| r.intersects(Hero.armStageLeft)
-				|| r.intersects(Hero.armStageRight)) {
+		if (r.intersects(Hero.bodyUpper) || r.intersects(Hero.bodyLower)) {
 			System.out.println("collision");
+			speedX = 0;
 		}
 	}
 

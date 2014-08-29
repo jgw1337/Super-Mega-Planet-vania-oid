@@ -16,29 +16,29 @@ import java.util.ArrayList;
 
 import javax.swing.plaf.FontUIResource;
 
-import com.jgw.framework.Animation;
+import com.jgw.framework.Animation1;
 
 public class StartingClass extends Applet implements Runnable, KeyListener {
 
-	public static Hero robot;
+	public static Hero hero;
 	public static Heliboy hb1, hb2;
 	public static Boy b1, b2;
-	private Image image, currentSprite, character, character2, character3,
-			characterDown, characterJumped, background;
+	private Image image, currentSprite, character, character2, character3, characterJumped, background;
 	private Image heliboy, heliboy2, heliboy3, heliboy4, heliboy5;
 	private Image boy, boy2, boy3, boy4, boy5;
 	public static Image tileOcean, tileDirt, tileGrassTop, tileGrassBottom,
 			tileGrassLeft, tileGrassRight;
+	public static Image tileCharLink, tileCharMegaman, tileCharMario, tileCharSamus, tileCharSimon;
 	private Graphics second;
 	private URL base;
 	private static Background bg1, bg2;
-	private Animation anim, hAnim, bAnim;
+	private Animation1 anim, hAnim, bAnim;
 	private ArrayList<Tile> tileArray = new ArrayList<Tile>();
 	public static int score = 0;
 	private Font font = new Font(null, Font.BOLD, 30);
 
 	enum GameState {
-		Ready, Running, Paused, GameOver
+		Ready, Running, GameOver
 	}
 
 	GameState state = GameState.Running;
@@ -50,7 +50,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		setFocusable(true);
 		addKeyListener(this);
 		Frame frame = (Frame) this.getParent().getParent();
-		frame.setTitle("Q-bot Alpha");
+		frame.setTitle("Super Mega Planet-vania-oid");
 		try {
 			base = getDocumentBase();
 		} catch (Exception e) {
@@ -60,7 +60,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		character2 = getImage(base, "data/images/character2.png");
 		character3 = getImage(base, "data/images/character3.png");
 
-		characterDown = getImage(base, "data/images/down.png");
 		characterJumped = getImage(base, "data/images/jumped.png");
 
 		heliboy = getImage(base, "data/images/heliboy.png");
@@ -84,13 +83,19 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		tileGrassLeft = getImage(base, "data/images/tilegrassleft.png");
 		tileGrassRight = getImage(base, "data/images/tilegrassright.png");
 
-		anim = new Animation();
+		tileCharLink = getImage(base, "data/images/char_link.png");
+		tileCharMegaman = getImage(base, "data/images/char_megaman.png");
+		tileCharMario = getImage(base, "data/images/char_mario.png");
+		tileCharSamus = getImage(base, "data/images/char_samus.png");
+		tileCharSimon = getImage(base, "data/images/char_simon.png");
+
+		anim = new Animation1();
 		anim.addFrame(character, 1250);
 		anim.addFrame(character2, 50);
 		anim.addFrame(character3, 50);
 		anim.addFrame(character2, 50);
 
-		hAnim = new Animation();
+		hAnim = new Animation1();
 		hAnim.addFrame(heliboy, 100);
 		hAnim.addFrame(heliboy2, 100);
 		hAnim.addFrame(heliboy3, 100);
@@ -100,7 +105,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		hAnim.addFrame(heliboy3, 100);
 		hAnim.addFrame(heliboy2, 100);
 
-		bAnim = new Animation();
+		bAnim = new Animation1();
 		bAnim.addFrame(boy, 100);
 		bAnim.addFrame(boy2, 100);
 		bAnim.addFrame(boy3, 100);
@@ -117,7 +122,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void start() {
 		bg1 = new Background(0, 0);
 		bg2 = new Background(2160, 0);
-		robot = new Hero();
+		hero = new Hero();
 
 		try {
 			loadMap("data/maps/map1.txt");
@@ -125,10 +130,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			e.printStackTrace();
 		}
 
-		hb1 = new Heliboy(340, 360);
-		hb2 = new Heliboy(700, 360);
-		b1 = new Boy(340, 360);
-		b2 = new Boy(700, 360);
+		hb1 = new Heliboy(340, 100);
+		hb2 = new Heliboy(700, 100);
+		b1 = new Boy(340, 100);
+		b2 = new Boy(700, 100);
 		Thread thread = new Thread(this);
 		thread.start();
 	}
@@ -182,13 +187,13 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void run() {
 		if (state == GameState.Running) {
 			while (true) {
-				robot.update();
-				if (robot.isJumped()) {
+				hero.update();
+				if (hero.isJumped()) {
 					currentSprite = characterJumped;
-				} else if (!robot.isJumped() && !robot.isDucked()) {
+				} else if (!hero.isJumped()) {
 					currentSprite = anim.getImage();
 				}
-				ArrayList<Projectile> projectiles = robot.getProjectiles();
+				ArrayList<Projectile> projectiles = hero.getProjectiles();
 				for (int i = 0; i < projectiles.size(); i++) {
 					Projectile p = (Projectile) projectiles.get(i);
 					if (p.isVisible()) {
@@ -200,6 +205,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 				updateTiles();
 				hb1.update();
 				hb2.update();
+				b1.update();
+				b2.update();
 				bg1.update();
 				bg2.update();
 				animate();
@@ -210,7 +217,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if (robot.getCenterY() > 500) {
+				if (hero.getCenterY() > 500) {
 					state = GameState.GameOver;
 				}
 			}
@@ -244,7 +251,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
 			g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
 			paintTiles(g);
-			ArrayList<Projectile> projectiles = robot.getProjectiles();
+			ArrayList<Projectile> projectiles = hero.getProjectiles();
 			for (int i = 0; i < projectiles.size(); i++) {
 				Projectile p = (Projectile) projectiles.get(i);
 				g.setColor(Color.YELLOW);
@@ -255,27 +262,19 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			g.drawImage(hAnim.getImage(), hb2.getCenterX() - 48,
 					hb2.getCenterY() - 48, this);
 			g.drawImage(bAnim.getImage(), b1.getCenterX() - 48,
-					hb1.getCenterY() - 48, this);
+					b1.getCenterY() - 48, this);
 			g.drawImage(bAnim.getImage(), b2.getCenterX() - 48,
-					hb2.getCenterY() - 48, this);
-			g.drawRect((int) robot.bodyUpper.getX(),
-					(int) robot.bodyUpper.getY(),
-					(int) robot.bodyUpper.getWidth(),
-					(int) robot.bodyUpper.getHeight());
-			g.drawRect((int) robot.bodyLower.getX(),
-					(int) robot.bodyLower.getY(),
-					(int) robot.bodyLower.getWidth(),
-					(int) robot.bodyLower.getHeight());
-			g.drawRect((int) robot.armStageRight.getX(),
-					(int) robot.armStageRight.getY(),
-					(int) robot.armStageRight.getWidth(),
-					(int) robot.armStageRight.getHeight());
-			g.drawRect((int) robot.footStageLeft.getX(),
-					(int) robot.footStageLeft.getY(),
-					(int) robot.footStageLeft.getWidth(),
-					(int) robot.footStageLeft.getHeight());
-			g.drawImage(currentSprite, robot.getCenterX() - 61,
-					robot.getCenterY() - 63, this);
+					b2.getCenterY() - 48, this);
+			g.drawRect((int) hero.bodyUpper.getX(),
+					(int) hero.bodyUpper.getY(),
+					(int) hero.bodyUpper.getWidth(),
+					(int) hero.bodyUpper.getHeight());
+			g.drawRect((int) hero.bodyLower.getX(),
+					(int) hero.bodyLower.getY(),
+					(int) hero.bodyLower.getWidth(),
+					(int) hero.bodyLower.getHeight());
+			g.drawImage(currentSprite, hero.getCenterX() - 61,
+					hero.getCenterY() - 63, this);
 
 			g.setFont(font);
 			g.setColor(Color.WHITE);
@@ -284,7 +283,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, 800, 480);
 			g.setColor(Color.WHITE);
-			g.drawString("Dead", 360, 240);
+			g.drawString("Game Over", 360, 240);
 		}
 	}
 
@@ -308,30 +307,21 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		case KeyEvent.VK_UP:
 			System.out.println("Move up.");
 			break;
-		case KeyEvent.VK_DOWN:
-			currentSprite = characterDown;
-			if (!robot.isJumped()) {
-				robot.setDucked(true);
-				robot.setSpeedX(0);
-			}
-			break;
 		case KeyEvent.VK_LEFT:
-			robot.moveLeft();
-			robot.setMovingLeft(true);
+			hero.moveLeft();
+			hero.setMovingLeft(true);
 			break;
 		case KeyEvent.VK_RIGHT:
-			robot.moveRight();
-			robot.setMovingRight(true);
+			hero.moveRight();
+			hero.setMovingRight(true);
 			break;
 		case KeyEvent.VK_SPACE:
-			robot.jump();
+			hero.jump();
 			break;
 		case KeyEvent.VK_CONTROL:
-			// if (!robot.isDucked() && !robot.isJumped()) {
-			if (!robot.isDucked()) {
-				robot.shoot();
-				robot.setReadyToFire(false);
-			}
+			// if (!hero.isDucked() && !hero.isJumped()) {
+				hero.shoot();
+				hero.setReadyToFire(false);
 			break;
 		}
 	}
@@ -342,20 +332,16 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		case KeyEvent.VK_UP:
 			System.out.println("Stop moving up.");
 			break;
-		case KeyEvent.VK_DOWN:
-			currentSprite = anim.getImage();
-			robot.setDucked(false);
-			break;
 		case KeyEvent.VK_LEFT:
-			robot.stopLeft();
+			hero.stopLeft();
 			break;
 		case KeyEvent.VK_RIGHT:
-			robot.stopRight();
+			hero.stopRight();
 			break;
 		case KeyEvent.VK_SPACE:
 			break;
 		case KeyEvent.VK_CONTROL:
-			robot.setReadyToFire(true);
+			hero.setReadyToFire(true);
 			break;
 		}
 	}
@@ -374,7 +360,24 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		return bg2;
 	}
 
-	public static Hero getRobot() {
-		return robot;
+	public static Hero getHero() {
+		return hero;
 	}
+
+	public static Heliboy getHb1() {
+		return hb1;
+	}
+
+	public static Heliboy getHb2() {
+		return hb2;
+	}
+
+	public static Boy getB1() {
+		return b1;
+	}
+
+	public static Boy getB2() {
+		return b2;
+	}
+
 }

@@ -4,12 +4,13 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 public class Tile {
-	private int tileX, tileY, speedX, type;
+	private int tileX, tileY, speedX;
+	private int type;
 	public Image tileImage;
 	private int pixelSize = 40;
 	private Rectangle r;
 
-	private Hero robot = StartingClass.getRobot();
+	private Hero hero = StartingClass.getHero();
 	private Background bg = StartingClass.getBg1();
 
 	public Tile(int x, int y, int typeInt) {
@@ -25,6 +26,7 @@ public class Tile {
 		 * case 2: tileImage = StartingClass.tileDirt; break; }
 		 */
 		switch (type) {
+		/* Ground */
 		case 5:
 			tileImage = StartingClass.tileDirt;
 			break;
@@ -39,6 +41,19 @@ public class Tile {
 			break;
 		case 2:
 			tileImage = StartingClass.tileGrassBottom;
+			break;
+		/* Stuff */
+		case 1:
+			tileImage = StartingClass.tileCharMegaman;
+			break;
+		case 3:
+			tileImage = StartingClass.tileCharMario;
+			break;
+		case 7:
+			tileImage = StartingClass.tileCharSamus;
+			break;
+		case 9:
+			tileImage = StartingClass.tileCharSimon;
 			break;
 		default:
 			type = 0;
@@ -57,44 +72,45 @@ public class Tile {
 		r.setBounds(tileX, tileY, 40, 40);
 
 		if (r.intersects(Hero.yellowRed) && type != 0) {
-			checkVerticalCollision(Hero.bodyUpper, Hero.bodyLower);
-			checkSideCollision(Hero.armStageLeft, Hero.armStageRight,
-					Hero.footStageLeft, Hero.footStageRight);
+			if (checkVerticalCollision(Hero.bodyUpper)) {
+				hero.setJumped(false);
+				hero.setSpeedY(0);
+				hero.setCenterY(tileY - 63);
+				System.out.println("Upper collision.");
+			}
+			if (checkVerticalCollision(Hero.bodyLower)) {
+				hero.setJumped(false);
+				hero.setSpeedY(0);
+				hero.setCenterY(tileY - 63);
+				System.out.println("Lower collision.");
+			}
+/*
+			if (checkSideCollision(Hero.bodyUpper)) {
+				hero.setCenterX(tileX + 102);
+				hero.setSpeedX(0);
+				System.out.println("Side collision.");
+			}
+*/
 		}
 	}
 
-	public void checkVerticalCollision(Rectangle rTop, Rectangle rBottom) {
-		if (rTop.intersects(r)) {
-			System.out.println("Upper collision.");
-		}
-
-		if (rBottom.intersects(r) && type == 8) {
-			robot.setJumped(false);
-			robot.setSpeedY(0);
-			robot.setCenterY(tileY - 63);
-			System.out.println("Lower collision.");
+	public boolean checkVerticalCollision(Rectangle rect) {
+		if (rect.intersects(r) && type == 8) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
-	public void checkSideCollision(Rectangle rArmStageLeft,
-			Rectangle rArmStageRight, Rectangle rFootStageLeft,
-			Rectangle rFootStageRight) {
-		if (type != 5 && type != 2 && type != 0) {
-			if (rArmStageLeft.intersects(r)) {
-				robot.setCenterX(tileX + 102);
-				robot.setSpeedX(0);
-			} else if (rFootStageLeft.intersects(r)) {
-				robot.setCenterX(tileX + 85);
-				robot.setSpeedX(0);
+	public boolean checkSideCollision(Rectangle rect) {
+		if (type != 1 && type != 3 && type != 7 && type != 9 && type != 0) {
+			if (rect.intersects(r)) {
+				return true;
+			} else {
+				return false;
 			}
-			
-			if (rArmStageRight.intersects(r)) {
-				robot.setCenterX(tileX - 62);
-				robot.setSpeedX(0);
-			} else if(rFootStageRight.intersects(r)) {
-				robot.setCenterX(tileX - 45);
-				robot.setSpeedX(0);
-			}
+		} else {
+			return false;
 		}
 	}
 

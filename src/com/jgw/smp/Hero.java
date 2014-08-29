@@ -12,7 +12,6 @@ public class Hero {
 	private boolean jumped = false;
 	private boolean movingLeft = false;
 	private boolean movingRight = false;
-	private boolean ducked = false;
 	private boolean readyToFire = true;
 
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -25,10 +24,6 @@ public class Hero {
 
 	public static Rectangle bodyUpper = new Rectangle(0, 0, 0, 0);
 	public static Rectangle bodyLower = new Rectangle(0, 0, 0, 0);
-	public static Rectangle armStageRight = new Rectangle(0, 0, 0, 0);
-	public static Rectangle armStageLeft = new Rectangle(0, 0, 0, 0);
-	public static Rectangle footStageRight = new Rectangle(0, 0, 0, 0);
-	public static Rectangle footStageLeft = new Rectangle(0, 0, 0, 0);
 
 	public static Rectangle yellowRed = new Rectangle(0, 0, 0, 0);
 	
@@ -70,25 +65,17 @@ public class Hero {
 		
 		bodyUpper.setRect(centerX - 34, centerY - 63, 68, 63);
 		bodyLower.setRect(bodyUpper.getX(), bodyUpper.getY() + 63, 68, 64);
-		armStageLeft.setRect(bodyUpper.getX() - 26, bodyUpper.getY() + 32, 26, 20);
-		armStageRight.setRect(bodyUpper.getX() + 68, bodyUpper.getY() + 32, 26, 20);
-		footStageLeft.setRect(centerX - 50, centerY + 20, 50, 15);
-		footStageRight.setRect(centerX, centerY + 20, 50, 15);
 		
 		yellowRed.setRect(centerX - 110, centerY - 110, 180, 180);
 	}
 
 	public void moveLeft() {
-		if (!ducked) {
 			speedX = -MOVESPEED;
-		}
 
 	}
 
 	public void moveRight() {
-		if (!ducked) {
 			speedX = MOVESPEED;
-		}
 	}
 
 	public void stopLeft() {
@@ -143,10 +130,6 @@ public class Hero {
 		return movingRight;
 	}
 
-	public boolean isDucked() {
-		return ducked;
-	}
-
 	public static Background getBg1() {
 		return bg1;
 	}
@@ -161,10 +144,6 @@ public class Hero {
 
 	public void setMovingRight(boolean movingRight) {
 		this.movingRight = movingRight;
-	}
-
-	public void setDucked(boolean ducked) {
-		this.ducked = ducked;
 	}
 
 	public static void setBg1(Background bg1) {
