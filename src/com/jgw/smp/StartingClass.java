@@ -28,7 +28,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	private Image boy, boy2, boy3, boy4, boy5;
 	public static Image tileOcean, tileDirt, tileGrassTop, tileGrassBottom,
 			tileGrassLeft, tileGrassRight;
-	public static Image tileCharLink, tileCharMegaman, tileCharMario, tileCharSamus, tileCharSimon;
+	public static Image tileCharLink, tileCharMegaman, tileCharMario, tileCharSamus, tileCharSimon, tileCharSackboy;
 	private Graphics second;
 	private URL base;
 	private static Background bg1, bg2;
@@ -88,6 +88,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		tileCharMario = getImage(base, "data/images/char_mario.png");
 		tileCharSamus = getImage(base, "data/images/char_samus.png");
 		tileCharSimon = getImage(base, "data/images/char_simon.png");
+		tileCharSackboy = getImage(base, "data/images/char_sackboy.png");
 
 		anim = new Animation1();
 		anim.addFrame(character, 1250);
@@ -265,14 +266,14 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 					b1.getCenterY() - 48, this);
 			g.drawImage(bAnim.getImage(), b2.getCenterX() - 48,
 					b2.getCenterY() - 48, this);
-			g.drawRect((int) hero.bodyUpper.getX(),
-					(int) hero.bodyUpper.getY(),
-					(int) hero.bodyUpper.getWidth(),
-					(int) hero.bodyUpper.getHeight());
-			g.drawRect((int) hero.bodyLower.getX(),
-					(int) hero.bodyLower.getY(),
-					(int) hero.bodyLower.getWidth(),
-					(int) hero.bodyLower.getHeight());
+			g.drawRect((int) hero.body.getX(),
+					(int) hero.body.getY(),
+					(int) hero.body.getWidth(),
+					(int) hero.body.getHeight());
+			g.drawRect((int) hero.head.getX(),
+					(int) hero.head.getY(),
+					(int) hero.head.getWidth(),
+					(int) hero.head.getHeight());
 			g.drawImage(currentSprite, hero.getCenterX() - 61,
 					hero.getCenterY() - 63, this);
 

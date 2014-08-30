@@ -51,7 +51,7 @@ public class Enemy {
 	}
 
 	private void checkCollision() {
-		if (rBody.intersects(Hero.bodyUpper) || rBody.intersects(Hero.bodyLower)) {
+		if (rBody.intersects(Hero.body) || rBody.intersects(Hero.head)) {
 			System.out.println("collision");
 		}
 	}

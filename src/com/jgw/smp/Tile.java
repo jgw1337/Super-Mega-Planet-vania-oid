@@ -43,19 +43,26 @@ public class Tile {
 			tileImage = StartingClass.tileGrassBottom;
 			break;
 		/* Stuff */
-		case 1:
+		case 16: /* g */
 			tileImage = StartingClass.tileCharMegaman;
 			break;
-		case 3:
+		case 22: /* m */
 			tileImage = StartingClass.tileCharMario;
 			break;
-		case 7:
+		case 10: /* a */
 			tileImage = StartingClass.tileCharSamus;
 			break;
-		case 9:
+		case 23: /* n */
 			tileImage = StartingClass.tileCharSimon;
 			break;
+		case 21: /* l */
+			tileImage = StartingClass.tileCharLink;
+			break;
+		case 28: /* s */
+			tileImage = StartingClass.tileCharSackboy;
+			break;
 		default:
+			System.out.println(type);
 			type = 0;
 			break;
 		}
@@ -69,23 +76,23 @@ public class Tile {
 		 */
 		speedX = bg.getSpeedX() * 5;
 		tileX += speedX;
-		r.setBounds(tileX, tileY, 40, 40);
+		r.setBounds(tileX, tileY, pixelSize, pixelSize);
 
 		if (r.intersects(Hero.yellowRed) && type != 0) {
-			if (checkVerticalCollision(Hero.bodyUpper)) {
+			if (checkVerticalCollision(Hero.body)) {
 				hero.setJumped(false);
 				hero.setSpeedY(0);
-				hero.setCenterY(tileY - 63);
+				hero.setCenterY(tileY - (hero.BODY_HEIGHT/2));
 				System.out.println("Upper collision.");
 			}
-			if (checkVerticalCollision(Hero.bodyLower)) {
+			if (checkVerticalCollision(Hero.head)) {
 				hero.setJumped(false);
 				hero.setSpeedY(0);
-				hero.setCenterY(tileY - 63);
+				hero.setCenterY(tileY - (hero.BODY_HEIGHT/2));
 				System.out.println("Lower collision.");
 			}
 /*
-			if (checkSideCollision(Hero.bodyUpper)) {
+			if (checkSideCollision(Hero.body)) {
 				hero.setCenterX(tileX + 102);
 				hero.setSpeedX(0);
 				System.out.println("Side collision.");
@@ -95,7 +102,7 @@ public class Tile {
 	}
 
 	public boolean checkVerticalCollision(Rectangle rect) {
-		if (rect.intersects(r) && type == 8) {
+		if (rect.intersects(r) && ( type == 2 || type == 4 || type == 4 || type == 8 )) {
 			return true;
 		} else {
 			return false;

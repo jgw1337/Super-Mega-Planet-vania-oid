@@ -4,9 +4,14 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Hero {
-	final int JUMPSPEED = -20;
-	final int MOVESPEED = 5;
+	final int JUMP_SPEED = -20;
+	final int MOVE_SPEED = 5;
 
+	final int BODY_WIDTH = 80;
+	final int BODY_HEIGHT = 120;
+	final int FACE_WIDTH = 30;
+	final int FACE_HEIGHT = 35;
+	
 	private static int centerX = 100;
 	private static int centerY = -377;
 	private boolean jumped = false;
@@ -22,8 +27,8 @@ public class Hero {
 	private static Background bg1 = StartingClass.getBg1();
 	private static Background bg2 = StartingClass.getBg2();
 
-	public static Rectangle bodyUpper = new Rectangle(0, 0, 0, 0);
-	public static Rectangle bodyLower = new Rectangle(0, 0, 0, 0);
+	public static Rectangle body = new Rectangle(0, 0, 0, 0);
+	public static Rectangle head = new Rectangle(0, 0, 0, 0);
 
 	public static Rectangle yellowRed = new Rectangle(0, 0, 0, 0);
 	
@@ -43,8 +48,8 @@ public class Hero {
 		}
 
 		if (speedX > 0 && centerX > 200) {
-			bg1.setSpeedX(-MOVESPEED/5);
-			bg2.setSpeedX(-MOVESPEED/5);
+			bg1.setSpeedX(-MOVE_SPEED/5);
+			bg2.setSpeedX(-MOVE_SPEED/5);
 		}
 
 		// Y Position
@@ -63,19 +68,19 @@ public class Hero {
 
 		}
 		
-		bodyUpper.setRect(centerX - 34, centerY - 63, 68, 63);
-		bodyLower.setRect(bodyUpper.getX(), bodyUpper.getY() + 63, 68, 64);
+		body.setRect(centerX - (BODY_WIDTH/2), centerY - (BODY_HEIGHT/2), BODY_WIDTH, BODY_HEIGHT);
+		head.setRect(centerX - (FACE_WIDTH/2), centerY - (BODY_HEIGHT/2), FACE_WIDTH, FACE_HEIGHT);
 		
-		yellowRed.setRect(centerX - 110, centerY - 110, 180, 180);
+		yellowRed.setRect(centerX - (BODY_WIDTH/2), centerY - (BODY_HEIGHT/2), BODY_WIDTH, BODY_HEIGHT);
 	}
 
 	public void moveLeft() {
-			speedX = -MOVESPEED;
+			speedX = -MOVE_SPEED;
 
 	}
 
 	public void moveRight() {
-			speedX = MOVESPEED;
+			speedX = MOVE_SPEED;
 	}
 
 	public void stopLeft() {
@@ -102,7 +107,7 @@ public class Hero {
 
 	public void jump() {
 		if (!jumped) {
-			speedY = JUMPSPEED;
+			speedY = JUMP_SPEED;
 			jumped = true;
 		}
 	}
@@ -115,11 +120,19 @@ public class Hero {
 	}
 	
 	public int getJUMPSPEED() {
-		return JUMPSPEED;
+		return JUMP_SPEED;
 	}
 
 	public int getMOVESPEED() {
-		return MOVESPEED;
+		return MOVE_SPEED;
+	}
+
+	public int getBODYWIDTH() {
+		return BODY_WIDTH;
+	}
+
+	public int getBODYHEIGHT() {
+		return BODY_HEIGHT;
 	}
 
 	public boolean isMovingLeft() {
